@@ -55,6 +55,12 @@ const spinReels = () => {
   return transpose(reels);
 };
 
+
+// Test route
+app.get("/", (req, res) => {
+  res.send("Server is running.");
+});
+
 app.post('/spin', (req, res) => {
   const { lines, bet, balance } = req.body;
 
@@ -67,6 +73,28 @@ app.post('/spin', (req, res) => {
   const newBalance = balance - bet * lines + winnings;
 
   res.json({ rows, winnings, newBalance });
+});
+
+
+// Deposit route
+app.post("/deposit", (req, res) => {
+  const { amount } = req.body;
+
+  if (typeof amount !== "number" || amount <= 0) {
+    return res.status(400).json({ message: "Invalid deposit amount" });
+  }
+
+  balance += amount;
+  res.json({ message: "Deposit successful", balance });
+});
+
+// Get current balance
+app.get("/balance", (req, res) => {
+  res.json({ balance });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 app.listen(PORT, () => {
