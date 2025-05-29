@@ -9,6 +9,8 @@ app.use(express.json());
 const ROWS = 3;
 const COLS = 3;
 
+let balance = 0;
+
 const SYMBOLS_COUNT = { A: 2, B: 4, C: 6, D: 8 };
 const SYMBOL_VALUE = { A: 5, B: 4, C: 3, D: 2 };
 
@@ -91,10 +93,6 @@ app.post("/deposit", (req, res) => {
 // Get current balance
 app.get("/balance", (req, res) => {
   res.json({ balance });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });
 
 app.listen(PORT, () => {
