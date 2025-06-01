@@ -12,13 +12,14 @@ app.use(session({
   secret: 'super-secret-key', // change this to an env var in production
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // set true if using HTTPS
+   cookie: {
+    sameSite: 'none',   
+    secure: true       
+  }
 }));
 
 const ROWS = 3;
 const COLS = 3;
-
-let balance = 0;
 
 const SYMBOLS_COUNT = { A: 2, B: 4, C: 6, D: 8 };
 const SYMBOL_VALUE = { A: 5, B: 4, C: 3, D: 2 };
