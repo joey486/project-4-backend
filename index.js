@@ -3,6 +3,8 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(cors({
   origin: "https://project-4-gambeling-machin.onrender.com",
   credentials: true
@@ -13,15 +15,15 @@ app.use(express.json());
 const session = require('express-session');
 
 app.use(session({
-  secret: 'super-secret-key', // change this to an env var in production
+  secret: 'super-secret-key', // use env var in prod
   resave: false,
-  saveUninitialized: true,
-   cookie: {
-    sameSite: 'none',   
-    secure: true       
+  saveUninitialized: false,  
+  cookie: {
+    sameSite: 'none',
+    secure: isProduction,    // only use secure cookies in production (HTTPS)
+    maxAge: 1000 * 60 * 60 * 24,  // 1 day session cookie lifetime
   }
 }));
-
 const ROWS = 3;
 const COLS = 3;
 
