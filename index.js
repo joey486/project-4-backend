@@ -79,6 +79,9 @@ app.get("/", (req, res) => {
 
 // Spin route
 app.post('/spin', (req, res) => {
+  console.log("Session ID:", req.sessionID);
+  console.log("Session balance before spin:", req.session.balance);
+
   const { lines, bet } = req.body;
   const balance = req.session.balance || 0;
 
@@ -91,6 +94,8 @@ app.post('/spin', (req, res) => {
   const newBalance = balance - bet * lines + winnings;
 
   req.session.balance = newBalance;
+
+  console.log("Session balance after spin:", req.session.balance);
 
   res.json({ rows, winnings, newBalance });
 });
