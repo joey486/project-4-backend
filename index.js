@@ -124,3 +124,10 @@ app.get("/balance", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.get("/init-session", (req, res) => {
+  if (req.session.balance === undefined) {
+    req.session.balance = 0;
+  }
+  res.json({ message: "Session initialized", balance: req.session.balance });
+});
