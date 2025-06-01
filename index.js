@@ -16,7 +16,7 @@ const session = require('express-session');
 
 app.use(session({
   secret: 'super-secret-key', // use env var in prod
-  resave: false,
+  resave: true,
   saveUninitialized: false,  
   cookie: {
     sameSite: 'none',
