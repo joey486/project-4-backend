@@ -6,6 +6,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+const session = require('express-session');
+
+app.use(session({
+  secret: 'super-secret-key', // change this to an env var in production
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // set true if using HTTPS
+}));
+
 const ROWS = 3;
 const COLS = 3;
 
@@ -63,8 +72,10 @@ app.get("/", (req, res) => {
   res.send("Server is running.");
 });
 
+// Spin route
 app.post('/spin', (req, res) => {
-  const { lines, bet, balance } = req.body;
+  const { lines, bet } = req.body;
+  const balance = req.session.balance || 0;
 
   if (lines < 1 || lines > 3 || bet <= 0 || bet * lines > balance) {
     return res.status(400).json({ error: 'Invalid bet or lines' });
@@ -74,9 +85,10 @@ app.post('/spin', (req, res) => {
   const winnings = getWinnings(rows, bet, lines);
   const newBalance = balance - bet * lines + winnings;
 
+  req.session.balance = newBalance;
+
   res.json({ rows, winnings, newBalance });
 });
-
 
 // Deposit route
 app.post("/deposit", (req, res) => {
@@ -86,13 +98,15 @@ app.post("/deposit", (req, res) => {
     return res.status(400).json({ message: "Invalid deposit amount" });
   }
 
-  balance += amount;
-  res.json({ message: "Deposit successful", balance });
+  req.session.balance = (req.session.balance || 0) + amount;
+
+  res.json({ message: "Deposit successful", balance: req.session.balance });
 });
+
 
 // Get current balance
 app.get("/balance", (req, res) => {
-  res.json({ balance });
+  res.json({ balance: req.session.balance || 0 });
 });
 
 app.listen(PORT, () => {
