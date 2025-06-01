@@ -3,7 +3,11 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: "https://project-4-gambeling-machin.onrender.com/",
+  credentials: true
+}));
+
 app.use(express.json());
 
 const session = require('express-session');
