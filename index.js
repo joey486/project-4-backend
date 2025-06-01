@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: "https://project-4-gambeling-machin.onrender.com/",
+  origin: "https://project-4-gambeling-machin.onrender.com",
   credentials: true
 }));
 
