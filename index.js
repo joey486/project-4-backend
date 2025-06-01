@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors({
   origin: "https://project-4-gambeling-machin.onrender.com",
-  // origin: "http://127.0.0.1:5500/frontend/index.html",
   credentials: true
 }));
 
@@ -83,7 +82,7 @@ app.post('/spin', (req, res) => {
   const { lines, bet } = req.body;
   const balance = req.session.balance || 0;
 
-  if (lines < 1 || lines > 3 || bet <= 0 || bet * lines > balance) {
+  if (lines < 1 || lines > 3 || bet <= 0) {
     return res.status(400).json({ error: 'Invalid bet or lines' });
   }
 
